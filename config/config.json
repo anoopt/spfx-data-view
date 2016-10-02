@@ -1,0 +1,45 @@
+{
+  "entries": [
+    {
+      "entry": "./lib/webparts/companyStats/CompanyStatsWebPart.js",
+      "manifest": "./src/webparts/companyStats/CompanyStatsWebPart.manifest.json",
+      "outputPath": "./dist/company-stats.bundle.js"
+    }
+  ],
+  "externals": {
+    "@microsoft/sp-client-base": "node_modules/@microsoft/sp-client-base/dist/sp-client-base.js",
+    "@microsoft/sp-client-preview": "node_modules/@microsoft/sp-client-preview/dist/sp-client-preview.js",
+    "@microsoft/sp-lodash-subset": "node_modules/@microsoft/sp-lodash-subset/dist/sp-lodash-subset.js",
+    "office-ui-fabric-react": "node_modules/office-ui-fabric-react/dist/office-ui-fabric-react.js",
+    "react": "node_modules/react/dist/react.min.js",
+    "react-dom": "node_modules/react-dom/dist/react-dom.min.js",
+    "react-dom/server": "node_modules/react-dom/dist/react-dom-server.min.js",
+    "jquery": {
+      "path": "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js",
+      "globalName": "jQuery"
+    },
+    "circleprogress": {
+      "path": "node_modules/jquery-circle-progress/dist/circle-progress.min.js",
+      "globalName": "jQuery",
+      "globalDependencies": [ "jquery" ]
+    },
+    "progressbar": {
+      "path": "node_modules/progressbar.js/dist/progressbar.min.js",
+      "globalName": "jQuery",
+      "globalDependencies": [ "jquery" ]
+    },
+    "canvasjs": {
+      "path": "node_modules/canvasjs/dist/canvasjs.min.js",
+      "globalName": "jQuery",
+      "globalDependencies": [ "jquery" ]
+    },
+     "chartjs": {
+      "path": "node_modules/chart.js/dist/Chart.min.js",
+      "globalName": "jQuery",
+      "globalDependencies": [ "jquery" ]
+    }
+  },
+  "localizedResources": {
+    "companyStatsStrings": "webparts/companyStats/loc/{locale}.js"
+  }
+}

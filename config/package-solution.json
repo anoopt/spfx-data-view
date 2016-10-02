@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "name": "company-stats-webpart-client-side-solution",
+    "id": "eaafc472-8887-4882-8550-34bd7480b66f",
+    "version": "1.0.0.0"
+  },
+  "paths": {
+    "zippedPackage": "solution/company-stats-webpart.spapp"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "libraryName": "company-stats-webpart",
+    "libraryId": "eaafc472-8887-4882-8550-34bd7480b66f",
+    "framework": "none"
+  }
+}

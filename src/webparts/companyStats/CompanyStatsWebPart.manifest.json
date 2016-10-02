@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../node_modules/@microsoft/sp-module-interfaces/lib/manifestSchemas/jsonSchemas/clientSideComponentManifestSchema.json",
+
+  "id": "a3694469-5862-4554-8124-49bc733b7407",
+  "componentType": "WebPart",
+  "version": "0.0.1",
+  "manifestVersion": 2,
+
+  "preconfiguredEntries": [{
+    "groupId": "a3694469-5862-4554-8124-49bc733b7407",
+    "group": { "default": "Under Development" },
+    "title": { "default": "CompanyStats" },
+    "description": { "default": "CompanyStats description" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "Company Stats",
+      "numberOfEmployees": 300,
+      "revenueYear1" : 10,
+      "revenueYear2" : 12,
+      "revenueYear3" : 15,
+      "workSatisfactionRate" : 50,
+      "colleagueSatisfactionRate" : 50,
+      "funSatisfactionRate" : 50,
+      "socialSatisfactionRate" : 50,
+      "doughnutData1":300,
+      "doughnutData2":50,
+      "doughnutData3":100
+    }
+  }]
+}
