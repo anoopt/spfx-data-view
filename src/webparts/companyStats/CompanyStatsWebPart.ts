@@ -9,6 +9,7 @@ import importableModuleLoader from '@microsoft/sp-module-loader';
 import styles from './CompanyStats.module.scss';
 import * as strings from 'companyStatsStrings';
 import { ICompanyStatsWebPartProps } from './ICompanyStatsWebPartProps';
+import Functions from './Functions'
 
 import * as $ from 'jquery';
 var ProgressBar = require('progressbar');
@@ -61,7 +62,20 @@ export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyS
           </div>
         </div>
       </div>`;
-      this.renderEmployees(120);
+      Functions.renderEmployees(120, this.properties.numberOfEmployees);
+
+      Functions.renderRevenue(this.properties.revenueYear3,
+                              this.properties.revenueYear2,
+                              this.properties.revenueYear1);
+
+      Functions.renderSatisfaction(this.properties.workSatisfactionRate,
+                    this.properties.colleagueSatisfactionRate,
+                    this.properties.funSatisfactionRate,
+                    this.properties.socialSatisfactionRate);
+
+      Functions.renderDoughnut(this.properties.doughnutData1,
+                                  this.properties.doughnutData2,
+                                  this.properties.doughnutData3);
     }
     else {
       this.domElement.innerHTML = `
@@ -82,7 +96,7 @@ export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyS
           <div id="tabs-2">
             <p class="ms-font-l ${styles.header}">Revenue</p>
             <div id="revenueChart">
-              <canvas></canvas>
+              <canvas id="results-graph"></canvas>
             </div>
           </div>
           <div id="tabs-3">
@@ -98,136 +112,40 @@ export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyS
             </div>
           </div>
       </div>`;
-      this.renderEmployees(180);
+      Functions.renderEmployees(180, this.properties.numberOfEmployees);
+      $("#tabs").tabs();
+      this.registerEvents();
     }
-
-
-    this.renderRevenue();
-    this.renderSatisfaction();
-    this.renderDoughnut();
-
-    $("#tabs").tabs();
   }
 
-  private renderEmployees(size: number): void{
-    ($ as any)('#employeescircle').circleProgress({
-          value: this.properties.numberOfEmployees / 1000,
-          size: size,
-          fill: {
-            gradient: ["#336699", "#336699"]
-          }
-          }).on('circle-animation-progress', function(event, progress, stepValue) {
-            $(this).find('strong').text(String(stepValue.toFixed(3)).substr(2));
+  private registerEvents(): void{
+    var employeesToBePassed = this.properties.numberOfEmployees;
+      $('#aEmployees').click(function(){
+        Functions.renderEmployees(180, employeesToBePassed);
       });
-  }
 
-  private renderRevenue(): void{
-      var canvas = <HTMLCanvasElement> $("#revenueChart").find('canvas').get(0);
-      var ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
-      var revenueChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: ["2014", "2015", "2016"],
-              datasets: [{
-                  label: 'in £ million',
-                  data: [
-                    this.properties.revenueYear3,
-                    this.properties.revenueYear2,
-                    this.properties.revenueYear1
-                  ],
-                  backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)'
-                  ],
-                  borderColor: [
-                      'rgba(255,99,132,1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)'
-                  ],
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  xAxes: [{
-                      stacked: true
-                  }],
-                  yAxes: [{
-                      stacked: true
-                  }]
-              }
-          }
+      var revenueData : number[] = [this.properties.revenueYear1,
+                                    this.properties.revenueYear2,
+                                    this.properties.revenueYear3];
+      $('#aRevenue').click(function(){
+        Functions.renderRevenue(revenueData[2],revenueData[1],revenueData[0]);
       });
-  }
 
-  private renderSatisfaction(): void{
+      var satisfactionData: number[] =[
+                      this.properties.workSatisfactionRate,
+                      this.properties.colleagueSatisfactionRate,
+                      this.properties.funSatisfactionRate,
+                      this.properties.socialSatisfactionRate];
 
-      var canvas = <HTMLCanvasElement> $("#satisfactionChart").find('canvas').get(0);
-      var ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
-
-      var data = {
-          labels: ["Work", "Colleagues", "Fun", "Social"],
-          datasets: [
-              {
-                  label: "Satisfaction in %",
-                  backgroundColor: "rgba(179,181,198,0.2)",
-                  borderColor: "rgba(179,181,198,1)",
-                  pointBackgroundColor: "rgba(179,181,198,1)",
-                  pointBorderColor: "#fff",
-                  pointHoverBackgroundColor: "#fff",
-                  pointHoverBorderColor: "rgba(179,181,198,1)",
-                  data:
-                  [
-                    this.properties.workSatisfactionRate,
-                    this.properties.colleagueSatisfactionRate,
-                    this.properties.funSatisfactionRate,
-                    this.properties.socialSatisfactionRate
-                  ]
-              }
-          ]
-      };
-
-      var satisfactionChart = new Chart(ctx, {
-          type: 'radar',
-          data: data
+      $('#aSatisfaction').click(function(){
+        Functions.renderSatisfaction(satisfactionData[0],satisfactionData[1],satisfactionData[2],satisfactionData[3]);
       });
-  }
 
-  private renderDoughnut(): void{
-
-      var canvas = <HTMLCanvasElement> $("#doughnutChart").find('canvas').get(0);
-      var ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
-
-      var data = {
-          labels: [
-              "Red",
-              "Blue",
-              "Yellow"
-          ],
-          datasets: [
-              {
-                  data: [
-                    this.properties.doughnutData1,
-                    this.properties.doughnutData2,
-                    this.properties.doughnutData3
-                  ],
-                  backgroundColor: [
-                      "#FF6384",
-                      "#36A2EB",
-                      "#FFCE56"
-                  ],
-                  hoverBackgroundColor: [
-                      "#FF6384",
-                      "#36A2EB",
-                      "#FFCE56"
-                  ]
-              }]
-      };
-
-      var doughnutChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: data
+      var doughnutData : number[] = [this.properties.doughnutData1,
+                                    this.properties.doughnutData2,
+                                    this.properties.doughnutData3];
+      $('#aSomedata').click(function(){
+        Functions.renderDoughnut(doughnutData[2],doughnutData[1],doughnutData[0]);
       });
   }
 
