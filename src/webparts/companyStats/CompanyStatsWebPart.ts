@@ -2,9 +2,10 @@ import {
   BaseClientSideWebPart,
   IPropertyPaneSettings,
   IWebPartContext,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneCheckbox
 } from '@microsoft/sp-client-preview';
-
+import importableModuleLoader from '@microsoft/sp-module-loader';
 import styles from './CompanyStats.module.scss';
 import * as strings from 'companyStatsStrings';
 import { ICompanyStatsWebPartProps } from './ICompanyStatsWebPartProps';
@@ -13,56 +14,105 @@ import * as $ from 'jquery';
 var ProgressBar = require('progressbar');
 var CanvasJS = require('canvasjs');
 var ChartJS = require('chartjs');
+require('jqueryui');
+
 require('circleprogress');
 
 export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyStatsWebPartProps> {
 
   public constructor(context: IWebPartContext) {
     super(context);
+    importableModuleLoader.loadCss('//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
   }
 
   public render(): void {
-    this.domElement.innerHTML = `
-    <div class="ms-Grid ${styles.companyStats}">
-      <div class="ms-Grid-row">
-        <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg6">
-          <p class="ms-font-l ${styles.header}">Number of Employees</p>
-            <div id="employeescircle" class="${styles.circle}">
-              <strong></strong>
+    var checked : Boolean = this.properties.showTabs;
+
+    if(!checked) {
+      this.domElement.innerHTML = `
+      <div class="ms-Grid ${styles.companyStats}">
+      <p class="ms-font-xxl ${styles.header}">${this.properties.description}</p>
+        <div class="ms-Grid-row">
+          <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg6">
+            <p class="ms-font-l ${styles.header}">Number of Employees</p>
+              <div id="employeescircle" class="${styles.circle}">
+                <strong></strong>
+              </div>
+          </div>
+          <div class="ms-Grid-col ms-u-sm6 ms-u-md8 ms-u-lg6">
+          <p class="ms-font-l ${styles.header}">Revenue</p>
+            <div id="revenueChart">
+              <canvas></canvas>
             </div>
-        </div>
-        <div class="ms-Grid-col ms-u-sm6 ms-u-md8 ms-u-lg6">
-        <p class="ms-font-l ${styles.header}">Revenue</p>
-          <div id="revenueChart">
-            <canvas></canvas>
           </div>
         </div>
-      </div>
-      <div class="ms-Grid-row">
-        <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg6">
-          <p class="ms-font-l ${styles.header}">Employee Satisfaction Rate</p>
-          <div id="satisfactionChart">
-            <canvas></canvas>
+        <div class="ms-Grid-row">
+          <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg6">
+            <p class="ms-font-l ${styles.header}">Employee Satisfaction Rate</p>
+            <div id="satisfactionChart">
+              <canvas></canvas>
+            </div>
+          </div>
+          <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg6">
+            <p class="ms-font-l ${styles.header}">Some data</p>
+            <div id="doughnutChart">
+              <canvas></canvas>
+            </div>
           </div>
         </div>
-        <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg6">
-          <p class="ms-font-l ${styles.header}">Some data</p>
-          <div id="doughnutChart">
-            <canvas></canvas>
+      </div>`;
+      this.renderEmployees(120);
+    }
+    else {
+      this.domElement.innerHTML = `
+      <div id="tabs" class="${styles.companyStats}">
+      <p class="ms-font-xxl ${styles.header}">${this.properties.description}</p>
+        <ul>
+          <li><a href="#tabs-1" class="ms-font-l" id="aEmployees">Number of Employees</a></li>
+          <li><a href="#tabs-2" class="ms-font-l" id="aRevenue">Revenue</a></li>
+          <li><a href="#tabs-3" class="ms-font-l" id="aSatisfaction">Employee Satisfaction Rate</a></li>
+          <li><a href="#tabs-4" class="ms-font-l" id="aSomedata">Some data</a></li>
+        </ul>
+          <div id="tabs-1">
+            <p class="ms-font-l ${styles.header}">Number of Employees</p>
+              <div id="employeescircle" class="${styles.circle} ${styles.leftextra}">
+                <strong class="${styles.strongextra}"></strong>
+              </div>
           </div>
-        </div>
-      </div>
-    </div>`;
-    this.renderEmployees();
+          <div id="tabs-2">
+            <p class="ms-font-l ${styles.header}">Revenue</p>
+            <div id="revenueChart">
+              <canvas></canvas>
+            </div>
+          </div>
+          <div id="tabs-3">
+            <p class="ms-font-l ${styles.header}">Employee Satisfaction Rate</p>
+            <div id="satisfactionChart">
+              <canvas></canvas>
+            </div>
+          </div>
+          <div id="tabs-4">
+            <p class="ms-font-l ${styles.header}">Some data</p>
+            <div id="doughnutChart">
+              <canvas></canvas>
+            </div>
+          </div>
+      </div>`;
+      this.renderEmployees(180);
+    }
+
+
     this.renderRevenue();
     this.renderSatisfaction();
     this.renderDoughnut();
+
+    $("#tabs").tabs();
   }
 
-  private renderEmployees(): void{
+  private renderEmployees(size: number): void{
     ($ as any)('#employeescircle').circleProgress({
           value: this.properties.numberOfEmployees / 1000,
-          size: 120,
+          size: size,
           fill: {
             gradient: ["#336699", "#336699"]
           }
@@ -184,6 +234,26 @@ export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyS
   protected get propertyPaneSettings(): IPropertyPaneSettings {
     return {
       pages: [
+        {
+          header: {
+            description: "Global properties"
+          },
+          groups: [
+            {
+              groupName: "Global properties",
+              groupFields: [
+                PropertyPaneCheckbox('showTabs', {
+                  text: 'Show in tabs',
+                  isChecked: true,
+                  isEnabled: true
+                }),
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
+                })
+              ]
+            }
+          ]
+        },
         {
           header: {
             description: "Data in top row"

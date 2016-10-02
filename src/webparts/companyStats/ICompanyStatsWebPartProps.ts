@@ -1,5 +1,6 @@
 export interface ICompanyStatsWebPartProps {
   description: string;
+  showTabs: boolean;
   numberOfEmployees: number;
   revenueYear1: number;
   revenueYear2: number;
