@@ -3,7 +3,8 @@ import {
   IPropertyPaneSettings,
   IWebPartContext,
   PropertyPaneTextField,
-  PropertyPaneCheckbox
+  PropertyPaneCheckbox,
+  PropertyPaneToggle
 } from '@microsoft/sp-client-preview';
 import importableModuleLoader from '@microsoft/sp-module-loader';
 import styles from './CompanyStats.module.scss';
@@ -154,29 +155,21 @@ export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyS
       pages: [
         {
           header: {
-            description: "Global properties"
+            description: "All properties"
           },
+          displayGroupsAsAccordion: true,
           groups: [
             {
               groupName: "Global properties",
               groupFields: [
-                PropertyPaneCheckbox('showTabs', {
-                  text: 'Show in tabs',
-                  isChecked: true,
-                  isEnabled: true
+                PropertyPaneToggle('showTabs', {
+                  label: 'Show in tabs'
                 }),
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
                 })
               ]
-            }
-          ]
-        },
-        {
-          header: {
-            description: "Data in top row"
-          },
-          groups: [
+            },
             {
               groupName: "Number of Employees",
               groupFields: [
@@ -198,14 +191,7 @@ export default class CompanyStatsWebPart extends BaseClientSideWebPart<ICompanyS
                   label: "Revenue in year before"
                 })
               ]
-            }
-          ]
-        },
-        {
-          header: {
-            description: "Data in bottom row"
-          },
-          groups: [
+            },
             {
               groupName: "Rates",
               groupFields: [

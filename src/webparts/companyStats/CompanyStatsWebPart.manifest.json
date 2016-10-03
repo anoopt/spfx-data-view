@@ -9,11 +9,11 @@
   "preconfiguredEntries": [{
     "groupId": "a3694469-5862-4554-8124-49bc733b7407",
     "group": { "default": "Under Development" },
-    "title": { "default": "CompanyStats" },
-    "description": { "default": "CompanyStats description" },
-    "officeFabricIconFontName": "Page",
+    "title": { "default": "Company Statistics" },
+    "description": { "default": "This webpart shows Company Statistics configured." },
+    "officeFabricIconFontName": "Financial",
     "properties": {
-      "description": "Company Stats",
+      "description": "Company Statistics",
       "numberOfEmployees": 300,
       "revenueYear1" : 10,
       "revenueYear2" : 12,
