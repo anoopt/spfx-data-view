@@ -43,6 +43,16 @@
       "path": "node_modules/office-ui-fabric/dist/js/jquery.fabric.min.js",
       "globalName": "jQuery",
       "globalDependencies": [ "jquery" ]
+    },
+    "jqueryreflection": {
+      "path": "src/webparts/companyStats/js/jquery.reflection.js",
+      "globalName": "jQuery",
+      "globalDependencies": [ "jquery" ]
+    },
+    "cloud9carousel": {
+      "path": "src/webparts/companyStats/js/jquery.cloud9carousel.js",
+      "globalName": "jQuery",
+      "globalDependencies": [ "jquery", "jqueryreflection" ]
     }
   },
   "localizedResources": {

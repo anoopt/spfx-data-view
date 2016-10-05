@@ -12,4 +12,10 @@ export interface ICompanyStatsWebPartProps {
   doughnutData1: number;
   doughnutData2: number;
   doughnutData3: number;
+  shareprice2011: number;
+  shareprice2012: number;
+  shareprice2013: number;
+  shareprice2014: number;
+  shareprice2015: number;
+  shareprice2016: number;
 }

@@ -43,4 +43,41 @@
   .horizontal{
     height: 20px;
   }
+
+  .card{
+    background-color: #69224F;
+    color: #fff;
+    padding: 3px;
+    border-radius: 6px;
+  }
+
+  .imageArea{
+    margin: 3px 0 12px 6px !important;
+    border-radius:0%;
+  }
+
+  .statIcon{
+    height:72px;
+    width:54px;
+    margin-top:10px;
+    border-radius:0%;
+  }
+
+  .statDetails{
+    text-align:center;
+    padding: 0px 3px 0px 70px;
+  }
+
+  .statTopText{
+    color: #fff;
+    text-align:center;
+  }
+
+  .marketStats{
+    background-color: #9D7E91;
+    height: 220px;
+    padding-top: 2px;
+    border-radius: 10px;
+    width: 710px;
+  }
 }

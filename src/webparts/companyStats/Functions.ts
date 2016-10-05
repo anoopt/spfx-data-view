@@ -126,4 +126,49 @@ export default class Functions{
           data: data
       });
   }
+
+  public static renderLineChart(
+                shareprice2011:number,
+                shareprice2012:number,
+                shareprice2013:number,
+                shareprice2014:number,
+                shareprice2015:number,
+                shareprice2016:number
+                                ) : void{
+      var canvas = <HTMLCanvasElement> $("#lineChart").find('canvas').get(0);
+      var ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
+
+      var data = {
+            labels: ["2011", "2012", "2013", "2014", "2015", "2016"],
+            datasets: [
+                {
+                    label: "Our company share price",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [shareprice2011, shareprice2012, shareprice2013, shareprice2014, shareprice2015, shareprice2016],
+                    spanGaps: false,
+                }
+            ]
+        };
+
+        var lineChart = new Chart(ctx, {
+            type: 'line',
+            data: data
+        });
+  }
 }
